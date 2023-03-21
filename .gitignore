@@ -132,3 +132,6 @@ dmypy.json
 /.project
 /.pydevproject
 /.settings/
+
+# Other files
+/conector/config.py

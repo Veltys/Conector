@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
+'''!
+    config
+
+    @file       : config.py
+    @brief      : Config file
+
+    @author     : Veltys
+    @date       : 2023-03-17
+    @version    : 1.0.0
+    @usage      : import config | from config import *
+    @note       : ...
+'''
+
+
+SSH_KEY = 'path/to/your/ssh/key'
+DEFAULT_ANSIBLE_USER = 'your_ssh_user'
+INVENTORY_DIR_NAME = 'path/to/your/ansible/inventory/directory/or/file'
+VAULT_PASS_FILE = 'path/to/your/ansible/vault_pass/file'
