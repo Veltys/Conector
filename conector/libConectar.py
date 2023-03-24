@@ -9,8 +9,8 @@
     @brief      : Server connection library
 
     @author     : Veltys
-    @date       : 2023-03-17
-    @version    : 3.0.0
+    @date       : 2023-03-24
+    @version    : 3.0.1
     @usage      : import libConectar | from libConectar import ...
     @note       : ...
 '''
@@ -43,11 +43,11 @@ class libConectar:
             self,
             argv = None,
             changeConsoleTitle = False,
-            ssh_key = SSH_KEY,
+            ssh_key = SSH_KEY,                                                  # @UndefinedVariable
             command = '',
-            default_ansible_user = DEFAULT_ANSIBLE_USER,
-            inventory_dir_name = INVENTORY_DIR_NAME,
-            vault_pass_file = VAULT_PASS_FILE
+            default_ansible_user = DEFAULT_ANSIBLE_USER,                        # @UndefinedVariable
+            inventory_dir_name = INVENTORY_DIR_NAME,                            # @UndefinedVariable
+            vault_pass_file = VAULT_PASS_FILE                                   # @UndefinedVariable
         ):
         '''!
             Class constructor
