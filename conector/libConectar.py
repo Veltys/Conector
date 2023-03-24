@@ -10,7 +10,7 @@
 
     @author     : Veltys
     @date       : 2023-03-24
-    @version    : 3.0.1
+    @version    : 3.1.0
     @usage      : import libConectar | from libConectar import ...
     @note       : ...
 '''
@@ -89,7 +89,7 @@ class libConectar:
                 self._doChangeConsoleTitle(f"\033]30;(" + user + f") { self._host_vars.get('ansible_host') }\007")
 
             print(f"Connecting to { host } ➡️ { user }@{ self._host_vars.get('ansible_host') }:{ self._host_vars.get('ansible_port') }..." + ' ') # Damn emojis 😢
-            res = os.system(f"ssh -i { self._ssh_key } -p { self._host_vars.get('ansible_port') } '" + user + f"@{ self._host_vars.get('ansible_host') }'")
+            res = os.system(f"ssh -i { self._ssh_key } " + (f"-L { self._args.local_bind }" if self._args.local_bind is not None else '') + f" -p { self._host_vars.get('ansible_port') } '" + user + f"@{ self._host_vars.get('ansible_host') }'")
 
             if changeConsoleTitle:
                 self._doChangeConsoleTitle("\033]30;%d : %n")                   # Restores the original console title
@@ -142,7 +142,9 @@ class libConectar:
         parser.add_argument('server', nargs = '?', help = 'Servidor al que se quiere conectar', type = str)
         parser.add_argument('-c', '--completion', action = 'store_true', help = 'Modo de autocompletar')
 
-        if self._command == 'desmontar':
+        if self._command == 'conectar':
+            parser.add_argument('-L', action = 'store', dest = 'local_bind', help = 'Pasa directamente al cliente SSH el contenido de esta opción con el parámetro \'-L\' (ver \'man ssh\' para más detalles)')
+        elif self._command == 'desmontar':
             parser.add_argument('-l', '--lazy', action = 'store_true', help = 'desvincula el sistema de ficheros ahora y limpia más tarde', required = False)
 
         args = parser.parse_args(argv)
