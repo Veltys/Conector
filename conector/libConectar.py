@@ -10,7 +10,7 @@
 
     @author     : Veltys
     @date       : 2023-04-20
-    @version    : 3.1.1
+    @version    : 3.2.0
     @usage      : import libConectar | from libConectar import ...
     @note       : ...
 '''
@@ -36,7 +36,7 @@ class libConectar:
     _command = None
     _default_ansible_user = None
     _host_vars = None
-    _inventory_dir_name = None
+    _inventory_dir_names = None
     _vault_pass_file = None
 
     def __init__(
@@ -46,7 +46,7 @@ class libConectar:
             ssh_key = SSH_KEY,                                                  # @UndefinedVariable
             command = '',
             default_ansible_user = DEFAULT_ANSIBLE_USER,                        # @UndefinedVariable
-            inventory_dir_name = INVENTORY_DIR_NAME,                            # @UndefinedVariable
+            inventory_dir_names = INVENTORY_DIR_NAMES,                          # @UndefinedVariable
             vault_pass_file = VAULT_PASS_FILE                                   # @UndefinedVariable
         ):
         '''!
@@ -59,7 +59,7 @@ class libConectar:
         self._changeConsoleTitle = changeConsoleTitle
         self._command = command
         self._default_ansible_user = default_ansible_user
-        self._inventory_dir_name = inventory_dir_name
+        self._inventory_dir_names = inventory_dir_names
         self._vault_pass_file = vault_pass_file
 
         if argv != None:
@@ -185,56 +185,64 @@ class libConectar:
 
                     f.close()
 
-            inventory = InventoryManager(
-                loader = loader,
-                sources = [
-                    os.path.join(self._inventory_dir_name, filename) \
-                    for filename \
-                    in os.listdir(self._inventory_dir_name) \
-                    if os.path.isfile(os.path.join(self._inventory_dir_name, filename))
-                ]
-            )
-            variable_manager = VariableManager(loader = loader, inventory = inventory)
+            inventories = []
+            variable_managers = []
 
-            if \
-                len(vars(self._args)) == 0 or \
-                (\
-                    self._args.server == None and \
-                    self._args.completion == False
-                ):
-                self.parseClArgs(['-h'])
-            elif self._args.completion:
-                res = ''
+            for inventory_dir_name in self._inventory_dir_names:
+                inventories.append(InventoryManager(
+                    loader = loader,
+                    sources = [
+                        os.path.join(inventory_dir_name, filename) \
+                        for filename \
+                        in os.listdir(inventory_dir_name) \
+                        if os.path.isfile(os.path.join(inventory_dir_name, filename))
+                    ]
+                ))
 
-                for h in inventory.hosts:
-                    res += f"{ h } "
+            for inventory in inventories:
+                variable_managers.append(VariableManager(loader = loader, inventory = inventory))
 
-                for g in inventory.groups:
-                    res += f"{ g } "
+            res = ''
 
-                res += "\n"
+            for i, _ in enumerate(inventories):
+                if \
+                    len(vars(self._args)) == 0 or \
+                    (\
+                        self._args.server == None and \
+                        self._args.completion == False
+                    ):
+                    self.parseClArgs(['-h'])
+                elif self._args.completion:
+                    for h in inventories[i].hosts:
+                        res += f"{ h } "
 
-                return res
-            elif self._args.server in inventory.get_groups_dict()['all']:
-                host = inventory.get_host(self._args.server)
+                    for g in inventories[i].groups:
+                        res += f"{ g } "
 
-                self._host_vars = variable_manager.get_vars(host = host)
+                    res += "\n"
+                elif self._args.server in inventories[i].get_groups_dict()['all']:
+                    host = inventories[i].get_host(self._args.server)
 
-                res = self._executeCommand(command, changeConsoleTitle, host)
+                    self._host_vars = variable_managers[i].get_vars(host = host)
 
-                return res
-            elif self._args.server in inventory.get_groups_dict():
-                res = 0
+                    res = self._executeCommand(command, changeConsoleTitle, host)
 
-                for host in inventory.get_groups_dict()[self._args.server]:
-                    host = inventory.get_host(host)
+                    return res
+                elif self._args.server in inventories[i].get_groups_dict():
+                    res = 0
 
-                    self._host_vars = variable_manager.get_vars(host = host)
+                    for host in inventories[i].get_groups_dict()[self._args.server]:
+                        host = inventories[i].get_host(host)
 
-                    res = res + self._executeCommand(command, changeConsoleTitle, host)
+                        self._host_vars = variable_managers[i].get_vars(host = host)
 
-                return res
-            else:
+                        res = res + self._executeCommand(command, changeConsoleTitle, host)
+
+                    return res
+                else:
+                    res = False
+
+            if not res:
                 print(f"ERROR: El servidor <{ self._args.server }> no existe", file = sys.stderr)
 
-                return False
+            return res

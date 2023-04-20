@@ -16,6 +16,10 @@ System connection manager using Python which connects and mounts home directory 
 - [ ] PowerShell completion facilities
 - [ ] Internationalization
 
+### [3.2.0] - 2023-04-20
+#### Added
+- Posibility to load multiple inventories
+
 ### [3.1.1] - 2023-04-20
 #### Fixed
 - Wrong class variable name
