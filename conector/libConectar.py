@@ -9,8 +9,8 @@
     @brief      : Server connection library
 
     @author     : Veltys
-    @date       : 2023-03-24
-    @version    : 3.1.0
+    @date       : 2023-04-20
+    @version    : 3.1.1
     @usage      : import libConectar | from libConectar import ...
     @note       : ...
 '''
@@ -36,7 +36,7 @@ class libConectar:
     _command = None
     _default_ansible_user = None
     _host_vars = None
-    _inventory_file_name = None
+    _inventory_dir_name = None
     _vault_pass_file = None
 
     def __init__(
