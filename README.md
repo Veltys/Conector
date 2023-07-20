@@ -16,6 +16,10 @@ System connection manager using Python which connects and mounts home directory 
 - [ ] PowerShell completion facilities
 - [ ] Internationalization
 
+### [3.2.2] - 2023-07-20
+#### Added
+- -v command to show version number
+
 ### [3.2.1] - 2023-07-20
 #### Deleted
 - host_id variable as it is redundant

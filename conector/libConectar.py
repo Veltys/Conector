@@ -10,7 +10,7 @@
 
     @author     : Veltys
     @date       : 2023-07-20
-    @version    : 3.2.1
+    @version    : 3.2.2
     @usage      : import libConectar | from libConectar import ...
     @note       : ...
 '''
@@ -141,6 +141,7 @@ class libConectar:
         parser = argparse.ArgumentParser()
         parser.add_argument('server', nargs = '?', help = 'Servidor al que se quiere conectar', type = str)
         parser.add_argument('-c', '--completion', action = 'store_true', help = 'Modo de autocompletar')
+        parser.add_argument('-v', '--version', action = 'store_true', help = 'Mostrar la versión y salir')
 
         if self._command == 'conectar':
             parser.add_argument('-L', action = 'store', dest = 'local_bind', help = 'Pasa directamente al cliente SSH el contenido de esta opción con el parámetro \'-L\' (ver \'man ssh\' para más detalles)')
@@ -169,7 +170,9 @@ class libConectar:
             changeConsoleTitle = self._changeConsoleTitle
 
         if self._args == None:
-            return False
+            res = False
+        elif self._args.version:
+            res = 'Python 3 conector pip package version 3.2.2'
         else:
             loader = DataLoader()
 
@@ -245,4 +248,4 @@ class libConectar:
             if not res:
                 print(f"ERROR: El servidor <{ self._args.server }> no existe", file = sys.stderr)
 
-            return res
+        return res
