@@ -9,8 +9,8 @@
     @brief      : Server connection library
 
     @author     : Veltys
-    @date       : 2023-04-20
-    @version    : 3.2.0
+    @date       : 2023-07-20
+    @version    : 3.2.1
     @usage      : import libConectar | from libConectar import ...
     @note       : ...
 '''
@@ -99,18 +99,18 @@ class libConectar:
         elif command == 'montar':
             user = (self._host_vars.get('ansible_user') if self._host_vars.get('ansible_user') != None else self._default_ansible_user)
 
-            os.makedirs(f"/media/servidores/{ self._host_vars.get('host_id') }/", exist_ok = True)
-            if os.system(f"sudo sshfs { user }@{ self._host_vars.get('ansible_host') }:/home/{ user } /media/servidores/{ self._host_vars.get('host_id') }/ -o allow_other,default_permissions,uid=1001,gid=1001,IdentityFile={ self._ssh_key } -p { self._host_vars.get('ansible_port') }") == ExitStatus.success:
-                return f"El servidor <{ self._host_vars.get('host_id') }> se ha montado correctamente"
+            os.makedirs(f"/media/servidores/{ self._host_vars.get('inventory_hostname') }/", exist_ok = True)
+            if os.system(f"sudo sshfs { user }@{ self._host_vars.get('ansible_host') }:/home/{ user } /media/servidores/{ self._host_vars.get('inventory_hostname') }/ -o allow_other,default_permissions,uid=1001,gid=1001,IdentityFile={ self._ssh_key } -p { self._host_vars.get('ansible_port') }") == ExitStatus.success:
+                return f"El servidor <{ self._host_vars.get('inventory_hostname') }> se ha montado correctamente"
             else:
-                return f"No ha sido posible montar correctamente el servidor <{ self._host_vars.get('host_id') }>"
+                return f"No ha sido posible montar correctamente el servidor <{ self._host_vars.get('inventory_hostname') }>"
         elif command == 'desmontar':
-            if os.system("sudo umount " + ('-l' if self._args.lazy else '') + f" /media/servidores/{ self._host_vars.get('host_id') }/") == ExitStatus.success:
-                os.rmdir(f"/media/servidores/{ self._host_vars.get('host_id') }/")
+            if os.system("sudo umount " + ('-l' if self._args.lazy else '') + f" /media/servidores/{ self._host_vars.get('inventory_hostname') }/") == ExitStatus.success:
+                os.rmdir(f"/media/servidores/{ self._host_vars.get('inventory_hostname') }/")
 
-                return f"El servidor <{ self._host_vars.get('host_id') }> se ha desmontado correctamente"
+                return f"El servidor <{ self._host_vars.get('inventory_hostname') }> se ha desmontado correctamente"
             else:
-                return f"No ha sido posible desmontar correctamente el servidor <{ self._host_vars.get('host_id') }>"
+                return f"No ha sido posible desmontar correctamente el servidor <{ self._host_vars.get('inventory_hostname') }>"
         else:
             print(f"El comando <{ command }> es incorrecto", file = sys.stderr)
 
