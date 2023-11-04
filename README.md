@@ -16,6 +16,10 @@ System connection manager using Python which connects and mounts home directory 
 - [ ] PowerShell completion facilities
 - [ ] Internationalization
 
+### [3.2.3] - 2023-11-04
+#### Fixed
+- Code quality
+
 ### [3.2.2] - 2023-07-20
 #### Added
 - -v command to show version number

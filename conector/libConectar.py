@@ -9,21 +9,23 @@
     @brief      : Server connection library
 
     @author     : Veltys
-    @date       : 2023-07-20
-    @version    : 3.2.2
+    @date       : 2023-11-04
+    @version    : 3.2.3
     @usage      : import libConectar | from libConectar import ...
     @note       : ...
 '''
 
 
+import argparse                                                                 # Argument processor functions
+import os                                                                       # Miscellaneous operating system interfaces
+import sys                                                                      # System-specific parameters and functions
+
+from exitstatus import ExitStatus                                               # Exit codes
+
 from ansible.inventory.manager import InventoryManager                          # Ansible inventory manager
 from ansible.parsing.dataloader import DataLoader                               # Ansible data loader
 from ansible.parsing.vault import VaultSecret                                   # Ansible vault parser
 from ansible.vars.manager import VariableManager                                # Ansible vars manager
-from exitstatus import ExitStatus                                               # Exit codes
-import argparse                                                                 # Argument processor functions
-import os                                                                       # Miscellaneous operating system interfaces
-import sys                                                                      # System-specific parameters and functions
 
 from .config import *                                                           # Config file
 
@@ -31,7 +33,7 @@ from .config import *                                                           
 class libConectar:
     _ansible_vault_pass = None
     _args = None
-    _changeConsoleTitle = None
+    _change_console_title = None
     _ssh_key = None
     _command = None
     _default_ansible_user = None
@@ -42,7 +44,7 @@ class libConectar:
     def __init__(
             self,
             argv = None,
-            changeConsoleTitle = False,
+            change_console_title = False,
             ssh_key = SSH_KEY,                                                  # @UndefinedVariable
             command = '',
             default_ansible_user = DEFAULT_ANSIBLE_USER,                        # @UndefinedVariable
@@ -56,7 +58,7 @@ class libConectar:
         '''
 
         self._ssh_key = ssh_key
-        self._changeConsoleTitle = changeConsoleTitle
+        self._change_console_title = change_console_title
         self._command = command
         self._default_ansible_user = default_ansible_user
         self._inventory_dir_names = inventory_dir_names
@@ -76,17 +78,17 @@ class libConectar:
             @return                     : Command output
         '''
 
-        if command == None:
+        if command is None:
             command = self._command
 
         if command == 'conectar':
-            user = self._host_vars.get('ansible_user') if self._host_vars.get('ansible_user') != None else self._default_ansible_user
+            user = self._host_vars.get('ansible_user') if self._host_vars.get('ansible_user') is not None else self._default_ansible_user
 
-            if host == None:
+            if host is None:
                 host = self._host_vars.get('ansible_host')
 
             if changeConsoleTitle:
-                self._doChangeConsoleTitle(f"\033]30;(" + user + f") { self._host_vars.get('ansible_host') }\007")
+                self._doChangeConsoleTitle(f"\033]30;({ user }) { self._host_vars.get('ansible_host') }\007")
 
             print(f"Connecting to { host } ➡️ { user }@{ self._host_vars.get('ansible_host') }:{ self._host_vars.get('ansible_port') }..." + ' ') # Damn emojis 😢
             res = os.system(f"ssh -i { self._ssh_key } " + (f"-L { self._args.local_bind }" if self._args.local_bind is not None else '') + f" -p { self._host_vars.get('ansible_port') } '" + user + f"@{ self._host_vars.get('ansible_host') }'")
@@ -97,7 +99,7 @@ class libConectar:
             return res
 
         elif command == 'montar':
-            user = (self._host_vars.get('ansible_user') if self._host_vars.get('ansible_user') != None else self._default_ansible_user)
+            user = (self._host_vars.get('ansible_user') if self._host_vars.get('ansible_user') is not None else self._default_ansible_user)
 
             os.makedirs(f"/media/servidores/{ self._host_vars.get('inventory_hostname') }/", exist_ok = True)
             if os.system(f"sudo sshfs { user }@{ self._host_vars.get('ansible_host') }:/home/{ user } /media/servidores/{ self._host_vars.get('inventory_hostname') }/ -o allow_other,default_permissions,uid=1001,gid=1001,IdentityFile={ self._ssh_key } -p { self._host_vars.get('ansible_port') }") == ExitStatus.success:
@@ -163,13 +165,13 @@ class libConectar:
             @param changeConsoleTitle   : Change console title
         '''
 
-        if command == None:
+        if command is None:
             command = self._command
 
-        if changeConsoleTitle == None:
-            changeConsoleTitle = self._changeConsoleTitle
+        if changeConsoleTitle is None:
+            changeConsoleTitle = self._change_console_title
 
-        if self._args == None:
+        if self._args is None:
             res = False
         elif self._args.version:
             res = 'Python 3 conector pip package version 3.2.2'
@@ -211,8 +213,8 @@ class libConectar:
                 if \
                     len(vars(self._args)) == 0 or \
                     (\
-                        self._args.server == None and \
-                        self._args.completion == False
+                        self._args.server is None and \
+                        not self._args.completion
                     ):
                     self.parseClArgs(['-h'])
                 elif self._args.completion:

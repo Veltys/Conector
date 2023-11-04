@@ -9,8 +9,8 @@
     @brief      : Custom installer
 
     @author     : Veltys
-    @date       : 2023-03-17
-    @version    : 1.0.0
+    @date       : 2023-11-04
+    @version    : 1.0.1
     @usage      : (imported by setup.py)
     @note       : ...
 '''
@@ -18,7 +18,6 @@
 
 import os                                                                       # Miscellaneous operating system interfaces
 import platform                                                                 # Access to underlying platform’s identifying data
-import shutil                                                                   # High-level file operations
 import subprocess                                                               # Subprocess management
 import sys                                                                      # System-specific parameters and functions
 
