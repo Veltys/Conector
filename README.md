@@ -1,5 +1,5 @@
 # Conector
-<!-- Faltan badges -->
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/21bad70cf92a45648d2f40bf5a9f5964)](https://app.codacy.com/gh/Veltys/Conector/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![GitHub commits](https://badgen.net/github/commits/Veltys/conector)](https://GitHub.com/Veltys/conector/commit/)
 [![GitHub latest commit](https://badgen.net/github/last-commit/Veltys/conector)](https://GitHub.com/Veltys/conector/commit/)
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Veltys/conector/blob/master/LICENSE)
@@ -17,6 +17,9 @@ System connection manager using Python which connects and mounts home directory 
 - [ ] Internationalization
 
 ### [3.2.3] - 2023-11-04
+#### Added
+- Codacy badge
+
 #### Fixed
 - Code quality
 
