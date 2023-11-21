@@ -9,18 +9,16 @@
     @brief      : Server connection system
 
     @author     : Veltys
-    @date       : 2023-11-04
-    @version    : 2.0.2
+    @date       : 2023-11-21
+    @version    : 2.0.3
     @usage      : python conectar.py -s server_or_group | python3 conectar.py -s server_or_group | ./conectar.py -s server_or_group
     @note       : ...
 '''
 
 
-import sys                                                                      # System-specific parameters and functions
-
-from exitstatus import ExitStatus                                               # POSIX exit status codes
-
 from conector.libConectar import libConectar                                    # Connection library
+from exitstatus import ExitStatus                                               # POSIX exit status codes
+import sys                                                                      # System-specific parameters and functions
 
 
 def main(argv = sys.argv[1:]):
@@ -34,21 +32,27 @@ def main(argv = sys.argv[1:]):
 
 
     conector = libConectar(argv, command = 'conectar', change_console_title = True)
-
     res = conector.run()
+
 
     if isinstance(res, str):
         print(res)
+
+        return ExitStatus.success
+
     elif isinstance(res, bool):
         if res:
-            sys.exit(ExitStatus.success)
+            return ExitStatus.success
+
         else:
-            sys.exit(ExitStatus.failure)
+            return ExitStatus.failure
+
     elif isinstance(res, ExitStatus):
-        sys.exit(res)
+        return res
+
     else:
-        sys.exit(ExitStatus.failure)
+        return ExitStatus.failure
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    sys.exit(main(sys.argv[1:]))

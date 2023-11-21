@@ -9,8 +9,8 @@
     @brief      : Server connection library
 
     @author     : Veltys
-    @date       : 2023-11-04
-    @version    : 3.2.3
+    @date       : 2023-11-21
+    @version    : 3.2.4
     @usage      : import libConectar | from libConectar import ...
     @note       : ...
 '''
@@ -29,7 +29,6 @@ from .config import *                                                           
 
 
 class libConectar:
-    _ansible_vault_pass = None
     _args = None
     _change_console_title = None
     _ssh_key = None
@@ -38,6 +37,7 @@ class libConectar:
     _host_vars = None
     _inventory_dir_names = None
     _vault_pass_file = None
+
 
     def __init__(
             self,
@@ -172,21 +172,24 @@ class libConectar:
         if self._args is None:
             res = False
         elif self._args.version:
-            res = 'Python 3 conector pip package version 3.2.3'
+            res = 'Python 3 conector pip package version 3.2.4'
         else:
             loader = DataLoader()
 
             if os.path.exists(self._vault_pass_file):
                 try:
                     f = open(self._vault_pass_file, 'r')
+
                 except IOError:
                     pass
-                else:
-                    self._ansible_vault_pass = f.read()
 
-                    loader.set_vault_secrets([('default', VaultSecret(_bytes = str.encode(self._ansible_vault_pass)))])
+                else:
+                    loader.set_vault_secrets([('default', VaultSecret(_bytes = str.encode(f.read())))])
 
                     f.close()
+
+                finally:
+                    pass
 
             inventories = []
             variable_managers = []
