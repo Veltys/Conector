@@ -22,6 +22,7 @@ System connection manager using Python which connects and mounts home directory 
 
 #### Fixed
 - Better **README.md** format
+- Internal *--break-system-packages* parameter in **uninstall.py**
 
 ### [3.2.4] - 2023-11-21
 #### Fixed
@@ -130,7 +131,7 @@ To install the 'conector' package, follow these steps:
 5. Install the 'conector' package using pip:
 
   ```bash
-   sudo pip install .
+   sudo pip install [ --break-system-packages ] .
   ```
 
 Now the 'conector' package should be installed on your system and ready to use.
