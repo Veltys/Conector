@@ -17,6 +17,9 @@ System connection manager using Python which connects and mounts home directory 
 - [ ] Internationalization
 
 ### [3.3.0] - 2023-12-13
+#### Added
+- SSH bastion hosts support
+
 #### Fixed
 - Better **README.md** format
 

@@ -9,8 +9,8 @@
     @brief      : Server connection library
 
     @author     : Veltys
-    @date       : 2023-11-21
-    @version    : 3.2.4
+    @date       : 2023-12-13
+    @version    : 3.3.0
     @usage      : import libConectar | from libConectar import ...
     @note       : ...
 '''
@@ -89,7 +89,7 @@ class libConectar:
                 self._doChangeConsoleTitle(f"\033]30;({ user }) { self._host_vars.get('ansible_host') }\007")
 
             print(f"Connecting to { host } ➡️ { user }@{ self._host_vars.get('ansible_host') }:{ self._host_vars.get('ansible_port') }..." + ' ') # Damn emojis 😢
-            res = os.system(f"ssh -i { self._ssh_key } " + (f"-L { self._args.local_bind }" if self._args.local_bind is not None else '') + f" -p { self._host_vars.get('ansible_port') } '" + user + f"@{ self._host_vars.get('ansible_host') }'")
+            res = os.system(f"ssh -i { self._ssh_key } " + (f"-L { self._args.local_bind }" if self._args.local_bind is not None else '') + f" -p { self._host_vars.get('ansible_port') } '{ user }@{ self._host_vars.get('ansible_host') }'" + (f" -J '{ user }@{ self._host_vars.get('bastion') }:21022'" if self._host_vars.get('bastion') is not None else ''))
 
             if changeConsoleTitle:
                 self._doChangeConsoleTitle("\033]30;%d : %n")                   # Restores the original console title
@@ -104,6 +104,7 @@ class libConectar:
                 return f"El servidor <{ self._host_vars.get('inventory_hostname') }> se ha montado correctamente"
             else:
                 return f"No ha sido posible montar correctamente el servidor <{ self._host_vars.get('inventory_hostname') }>"
+
         elif command == 'desmontar':
             if os.system("sudo umount " + ('-l' if self._args.lazy else '') + f" /media/servidores/{ self._host_vars.get('inventory_hostname') }/") == ExitStatus.success:
                 os.rmdir(f"/media/servidores/{ self._host_vars.get('inventory_hostname') }/")
