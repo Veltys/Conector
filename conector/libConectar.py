@@ -25,7 +25,7 @@ import argparse                                                                 
 import os                                                                       # Miscellaneous operating system interfaces
 import sys                                                                      # System-specific parameters and functions
 
-from .config import *                                                           # Config file
+from config import *                                                            # Config file
 
 
 class libConectar:

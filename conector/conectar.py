@@ -16,9 +16,10 @@
 '''
 
 
-from conector.libConectar import libConectar                                    # Connection library
 from exitstatus import ExitStatus                                               # POSIX exit status codes
 import sys                                                                      # System-specific parameters and functions
+
+from libConectar import libConectar                                             # Connection library
 
 
 def main(argv = sys.argv[1:]):
