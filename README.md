@@ -16,6 +16,10 @@ System connection manager using Python which connects and mounts home directory 
 - [ ] PowerShell completion facilities
 - [ ] Internationalization
 
+### [3.3.0] - 2023-12-13
+#### Fixed
+- Better **README.md** format
+
 ### [3.2.4] - 2023-11-21
 #### Fixed
 - Code quality
@@ -29,11 +33,11 @@ System connection manager using Python which connects and mounts home directory 
 
 ### [3.2.2] - 2023-07-20
 #### Added
-- -v command to show version number
+- *-v* parameter to show version number
 
 ### [3.2.1] - 2023-07-20
 #### Deleted
-- host_id variable as it is redundant
+- *host_id* variable as it is redundant
 
 ### [3.2.0] - 2023-04-20
 #### Added
@@ -45,7 +49,7 @@ System connection manager using Python which connects and mounts home directory 
 
 ### [3.1.0] - 2023-03-24
 #### Added
-- -L option to stablish a local SSH tunnel bind
+- *-L* parameter to stablish a local SSH tunnel bind
 
 ### [3.0.1] - 2023-03-24
 #### Fixed
@@ -95,33 +99,44 @@ To install the 'conector' package, follow these steps:
 
 1. Make sure you have Python 3.6 or higher installed on your system. You can check your Python version by running the following command in your terminal:
 
-   python3 --version
+  ```bash
+  python3 --version
+  ```
 
    If you don't have Python installed, you can download it from the [official Python website](https://www.python.org/downloads/).
 
 2. It's recommended to create a virtual environment for the installation to avoid potential conflicts with other packages. You can do this by running the following commands:
 
-   python3 -m venv conector-env
-   source conector-env/bin/activate  # On Windows, use 'conector-env\Scripts\activate'
+  ```bash
+  python3 -m venv conector-env
+  source conector-env/bin/activate  # On Windows, use 'conector-env\Scripts\activate'
+  ```
 
 3. Clone the 'Conector' repository from GitHub:
 
-   git clone https://github.com/Veltys/Conector.git
+  ```bash
+  git clone https://github.com/Veltys/Conector.git
+  ```
 
 4. Navigate to the cloned repository's directory:
 
-   cd Conector
+  ```bash
+  cd Conector
+  ```
 
 5. Install the 'conector' package using pip:
 
+  ```bash
    sudo pip install .
+  ```
 
 Now the 'conector' package should be installed on your system and ready to use.
 
 Note: To exit the virtual environment after you've finished using the 'conector' package, simply run the following command:
 
-   deactivate
-
+  ```bash
+  deactivate
+  ```
 
 ## Uninstalling
 Keep in mind that the normal uninstall process will leave some residue on the system. That is why a clean uninstall script is provided.
@@ -130,11 +145,15 @@ To uninstall the 'conector' package and remove the Bash autocompletion files, fo
 
 1. Navigate to the cloned repository's directory:
 
-   cd Conector
+  ```bash
+  cd Conector
+  ```
 
 2. Run the following command, this will remove the 'conector' package and the associated bash autocompletion files:
 
+  ```bash
   python3 uninstall.py
+  ```
 
 
 ## Acknowledgments, sources consulted and other credits
