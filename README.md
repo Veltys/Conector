@@ -17,6 +17,9 @@ System connection manager using Python which connects and mounts home directory 
 - [ ] Internationalization
 
 ### [3.5.0] - 2023-12-14
+#### Added
+- *break-system-packages* parameter detection
+
 #### Fixed
 - Wrong bastion port
 
@@ -145,6 +148,8 @@ To install the 'conector' package, follow these steps:
    sudo pip install [ --break-system-packages ] .
   ```
 
+  Note: Do not forget the final dot.
+
 Now the 'conector' package should be installed on your system and ready to use.
 
 Note: To exit the virtual environment after you've finished using the 'conector' package, simply run the following command:
@@ -167,7 +172,7 @@ To uninstall the 'conector' package and remove the Bash autocompletion files, fo
 2. Run the following command, this will remove the 'conector' package and the associated bash autocompletion files:
 
   ```bash
-  python3 uninstall.py
+  python3 uninstall.py [ --break-system-packages ]
   ```
 
 

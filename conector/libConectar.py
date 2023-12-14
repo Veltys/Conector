@@ -173,7 +173,7 @@ class libConectar:
         if self._args is None:
             res = False
         elif self._args.version:
-            res = 'Python 3 conector pip package version 3.4.0'
+            res = 'Python 3 conector pip package version 3.5.0'
         else:
             loader = DataLoader()
 
