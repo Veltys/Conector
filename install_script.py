@@ -70,8 +70,7 @@ class CustomInstall(install):
                     dst_path = '/etc/bash_completion.d'
 
                     for file in os.listdir(src_path):
-                        # Copy Bash autocompletion files to /etc/bash_completion.d/
-                        if file.endswith("-completion.bash"):
+                        if file.endswith("-completion.bash"):                   # Copy Bash autocompletion files to /etc/bash_completion.d/
                             src_file = os.path.join(src_path, file)
                             dst_file = os.path.join(dst_path, file)
 
@@ -90,5 +89,4 @@ class CustomInstall(install):
             print('The installation process cannot continue')
 
         else:
-            # Run normal installation
-            install.run(self)
+            install.run(self)                                                   # Run normal installation

@@ -9,8 +9,8 @@
     @brief      : Server connection library
 
     @author     : Veltys
-    @date       : 2023-12-13
-    @version    : 3.3.0
+    @date       : 2023-12-14
+    @version    : 3.4.0
     @usage      : import libConectar | from libConectar import ...
     @note       : ...
 '''
@@ -33,6 +33,7 @@ class libConectar:
     _change_console_title = None
     _ssh_key = None
     _command = None
+    _default_ansible_port = None
     _default_ansible_user = None
     _host_vars = None
     _inventory_dir_names = None
@@ -45,19 +46,21 @@ class libConectar:
             change_console_title = False,
             ssh_key = SSH_KEY,                                                  # @UndefinedVariable
             command = '',
+            default_ansible_port = DEFAULT_ANSIBLE_PORT,                        # @UndefinedVariable
             default_ansible_user = DEFAULT_ANSIBLE_USER,                        # @UndefinedVariable
             inventory_dir_names = INVENTORY_DIR_NAMES,                          # @UndefinedVariable
             vault_pass_file = VAULT_PASS_FILE                                   # @UndefinedVariable
         ):
         '''!
             Class constructor
-            
+
             Initializes default values of the class
         '''
 
         self._ssh_key = ssh_key
         self._change_console_title = change_console_title
         self._command = command
+        self._default_ansible_port = default_ansible_port
         self._default_ansible_user = default_ansible_user
         self._inventory_dir_names = inventory_dir_names
         self._vault_pass_file = vault_pass_file
@@ -76,20 +79,19 @@ class libConectar:
             @return                     : Command output
         '''
 
-        if command is None:
-            command = self._command
+        command = self._command if command is None else command
+        port = self._host_vars.get('ansible_port') if self._host_vars.get('ansible_port') is not None else self._default_ansible_port
+        user = self._host_vars.get('ansible_user') if self._host_vars.get('ansible_user') is not None else self._default_ansible_user
 
         if command == 'conectar':
-            user = self._host_vars.get('ansible_user') if self._host_vars.get('ansible_user') is not None else self._default_ansible_user
-
             if host is None:
                 host = self._host_vars.get('ansible_host')
 
             if changeConsoleTitle:
                 self._doChangeConsoleTitle(f"\033]30;({ user }) { self._host_vars.get('ansible_host') }\007")
 
-            print(f"Connecting to { host } ➡️ { user }@{ self._host_vars.get('ansible_host') }:{ self._host_vars.get('ansible_port') }..." + ' ') # Damn emojis 😢
-            res = os.system(f"ssh -i { self._ssh_key } " + (f"-L { self._args.local_bind }" if self._args.local_bind is not None else '') + f" -p { self._host_vars.get('ansible_port') } '{ user }@{ self._host_vars.get('ansible_host') }'" + (f" -J '{ user }@{ self._host_vars.get('bastion') }:21022'" if self._host_vars.get('bastion') is not None else ''))
+            print(f"Connecting to { host } ➡️ { user }@{ self._host_vars.get('ansible_host') }:{ port }..." + ' ') # Damn emojis 😢
+            res = os.system(f"ssh -i { self._ssh_key } " + (f"-L { self._args.local_bind }" if self._args.local_bind is not None else '') + f" -p { port } '{ user }@{ self._host_vars.get('ansible_host') }'" + (f" -J '{ user }@{ self._host_vars.get('bastion') }:21022'" if self._host_vars.get('bastion') is not None else ''))
 
             if changeConsoleTitle:
                 self._doChangeConsoleTitle("\033]30;%d : %n")                   # Restores the original console title
@@ -97,10 +99,8 @@ class libConectar:
             return res
 
         elif command == 'montar':
-            user = (self._host_vars.get('ansible_user') if self._host_vars.get('ansible_user') is not None else self._default_ansible_user)
-
             os.makedirs(f"/media/servidores/{ self._host_vars.get('inventory_hostname') }/", exist_ok = True)
-            if os.system(f"sudo sshfs { user }@{ self._host_vars.get('ansible_host') }:/home/{ user } /media/servidores/{ self._host_vars.get('inventory_hostname') }/ -o allow_other,default_permissions,uid=1001,gid=1001,IdentityFile={ self._ssh_key } -p { self._host_vars.get('ansible_port') }") == ExitStatus.success:
+            if os.system(f"sudo sshfs { user }@{ self._host_vars.get('ansible_host') }:/home/{ user } /media/servidores/{ self._host_vars.get('inventory_hostname') }/ -o allow_other,default_permissions,uid=1001,gid=1001,IdentityFile={ self._ssh_key } -p { port }") == ExitStatus.success:
                 return f"El servidor <{ self._host_vars.get('inventory_hostname') }> se ha montado correctamente"
             else:
                 return f"No ha sido posible montar correctamente el servidor <{ self._host_vars.get('inventory_hostname') }>"
@@ -173,7 +173,7 @@ class libConectar:
         if self._args is None:
             res = False
         elif self._args.version:
-            res = 'Python 3 conector pip package version 3.3.0'
+            res = 'Python 3 conector pip package version 3.4.0'
         else:
             loader = DataLoader()
 
