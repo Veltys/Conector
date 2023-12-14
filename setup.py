@@ -9,8 +9,8 @@
     @brief      : Package installer
 
     @author     : Veltys
-    @date       : 2023-03-17
-    @version    : 1.0.0
+    @date       : 2023-12-14
+    @version    : 1.0.1
     @usage      : (run by pip when the package is installed)
     @note       : ...
 '''
@@ -20,7 +20,7 @@ from setuptools import setup, find_packages                                     
 
 from install_script import CustomInstall
 
-VERSION = '3.5.2'
+VERSION = '3.5.3'
 DESCRIPTION = 'Python-powered system connection manager and mounts via SSH'
 LONG_DESCRIPTION = 'System connection manager using Python which connects and mounts home directory through SSH'
 
@@ -35,7 +35,7 @@ setup(
     package_data = {
         'conector': [ 'bash_completion/*' ],
     },
-    install_requires = [ 'exitstatus' ],
+    install_requires = [ 'ansible', 'exitstatus' ],
     cmdclass = {
         "install": CustomInstall,
     },
