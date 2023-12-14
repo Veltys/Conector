@@ -10,7 +10,7 @@
 
     @author     : Veltys
     @date       : 2023-12-14
-    @version    : 3.4.1
+    @version    : 3.4.2
     @usage      : import libConectar | from libConectar import ...
     @note       : ...
 '''
@@ -90,7 +90,7 @@ class libConectar:
             if changeConsoleTitle:
                 self._doChangeConsoleTitle(f"\033]30;({ user }) { self._host_vars.get('ansible_host') }\007")
 
-            print(f"Connecting to { host } ➡️ { user }@{ self._host_vars.get('ansible_host') }:{ port }..." + ' ') # Damn emojis 😢
+            print(f"Connecting to { host } ➡️ { user }@{ self._host_vars.get('ansible_host') }:{ port }" + (f" using { user }@{ self._host_vars.get('bastion') }:{ port } as jump host" if self._host_vars.get('bastion') is not None else '') + '... ') # Damn emojis 😢
             res = os.system(f"ssh -i { self._ssh_key } " + (f"-L { self._args.local_bind }" if self._args.local_bind is not None else '') + f" -p { port } '{ user }@{ self._host_vars.get('ansible_host') }'" + (f" -J '{ user }@{ self._host_vars.get('bastion') }:{ port }'" if self._host_vars.get('bastion') is not None else ''))
 
             if changeConsoleTitle:
