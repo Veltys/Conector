@@ -20,7 +20,7 @@ from setuptools import setup, find_packages                                     
 
 from install_script import CustomInstall
 
-VERSION = '3.3.0'
+VERSION = '3.4.0'
 DESCRIPTION = 'Python-powered system connection manager and mounts via SSH'
 LONG_DESCRIPTION = 'System connection manager using Python which connects and mounts home directory through SSH'
 
@@ -33,13 +33,13 @@ setup(
     long_description = LONG_DESCRIPTION,
     packages = find_packages(),
     package_data = {
-        'conector': ['bash_completion/*'],
+        'conector': [ 'bash_completion/*' ],
     },
-    install_requires = ['exitstatus'],
+    install_requires = [ 'exitstatus' ],
     cmdclass = {
         "install": CustomInstall,
     },
-    keywords = ['python', 'connector', 'ssh'],
+    keywords = [ 'python', 'connector', 'ssh' ],
     entry_points = {
         'console_scripts': [
         'conectar = conector.conectar:main',

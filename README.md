@@ -16,6 +16,13 @@ System connection manager using Python which connects and mounts home directory 
 - [ ] PowerShell completion facilities
 - [ ] Internationalization
 
+### [3.4.0] - 2023-12-14
+#### Added
+- Default Ansible port support
+
+#### Fixed
+- Wrong varaible name in **config.py.template**
+
 ### [3.3.0] - 2023-12-13
 #### Added
 - SSH bastion hosts support
