@@ -17,6 +17,10 @@ System connection manager using Python which connects and mounts home directory 
 - [ ] Internationalization
 - [ ] Full commands translation
 
+### [3.5.3] - 2023-12-14
+#### Fixed
+- Maybe is good idea to put 'ansible' package in the requirements... Since it is a really required requirement...
+
 ### [3.5.2] - 2023-12-14
 #### Fixed
 - Windows installation process
