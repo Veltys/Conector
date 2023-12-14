@@ -10,7 +10,7 @@
 
     @author     : Veltys
     @date       : 2023-12-14
-    @version    : 3.4.1
+    @version    : 3.4.2
     @usage      : import libConectar | from libConectar import ...
     @note       : ...
 '''
@@ -90,7 +90,7 @@ class libConectar:
             if changeConsoleTitle:
                 self._doChangeConsoleTitle(f"\033]30;({ user }) { self._host_vars.get('ansible_host') }\007")
 
-            print(f"Connecting to { host } ➡️ { user }@{ self._host_vars.get('ansible_host') }:{ port }..." + ' ') # Damn emojis 😢
+            print(f"Connecting to { host } ➡️ { user }@{ self._host_vars.get('ansible_host') }:{ port }" + (f" using { user }@{ self._host_vars.get('bastion') }:{ port } as jump host" if self._host_vars.get('bastion') is not None else '') + '... ') # Damn emojis 😢
             res = os.system(f"ssh -i { self._ssh_key } " + (f"-L { self._args.local_bind }" if self._args.local_bind is not None else '') + f" -p { port } '{ user }@{ self._host_vars.get('ansible_host') }'" + (f" -J '{ user }@{ self._host_vars.get('bastion') }:{ port }'" if self._host_vars.get('bastion') is not None else ''))
 
             if changeConsoleTitle:
@@ -99,21 +99,21 @@ class libConectar:
             return res
 
         elif command == 'montar':
-            os.makedirs(f"/media/servidores/{ self._host_vars.get('inventory_hostname') }/", exist_ok = True)
-            if os.system(f"sudo sshfs { user }@{ self._host_vars.get('ansible_host') }:/home/{ user } /media/servidores/{ self._host_vars.get('inventory_hostname') }/ -o allow_other,default_permissions,uid=1001,gid=1001,IdentityFile={ self._ssh_key } -p { port }") == ExitStatus.success:
-                return f"El servidor <{ self._host_vars.get('inventory_hostname') }> se ha montado correctamente"
+            os.makedirs(f"/media/servers/{ self._host_vars.get('inventory_hostname') }/", exist_ok = True)
+            if os.system(f"sudo sshfs { user }@{ self._host_vars.get('ansible_host') }:/home/{ user } /media/servers/{ self._host_vars.get('inventory_hostname') }/ -o allow_other,default_permissions,uid=1001,gid=1001,IdentityFile={ self._ssh_key } -p { port }") == ExitStatus.success:
+                return f"Server <{ self._host_vars.get('inventory_hostname') }> correctly mounted"
             else:
-                return f"No ha sido posible montar correctamente el servidor <{ self._host_vars.get('inventory_hostname') }>"
+                return f"Cannot mount <{ self._host_vars.get('inventory_hostname') }> server"
 
         elif command == 'desmontar':
-            if os.system("sudo umount " + ('-l' if self._args.lazy else '') + f" /media/servidores/{ self._host_vars.get('inventory_hostname') }/") == ExitStatus.success:
-                os.rmdir(f"/media/servidores/{ self._host_vars.get('inventory_hostname') }/")
+            if os.system("sudo umount " + ('-l' if self._args.lazy else '') + f" /media/servers/{ self._host_vars.get('inventory_hostname') }/") == ExitStatus.success:
+                os.rmdir(f"/media/servers/{ self._host_vars.get('inventory_hostname') }/")
 
-                return f"El servidor <{ self._host_vars.get('inventory_hostname') }> se ha desmontado correctamente"
+                return f"Server <{ self._host_vars.get('inventory_hostname') }> correctly unmounted"
             else:
-                return f"No ha sido posible desmontar correctamente el servidor <{ self._host_vars.get('inventory_hostname') }>"
+                return f"Cannot unmount <{ self._host_vars.get('inventory_hostname') }> server"
         else:
-            print(f"El comando <{ command }> es incorrecto", file = sys.stderr)
+            print(f"Invalid command <{ command }>", file = sys.stderr)
 
             return ExitStatus.failure
 
@@ -140,14 +140,14 @@ class libConectar:
         '''
 
         parser = argparse.ArgumentParser()
-        parser.add_argument('server', nargs = '?', help = 'Servidor al que se quiere conectar', type = str)
-        parser.add_argument('-c', '--completion', action = 'store_true', help = 'Modo de autocompletar')
-        parser.add_argument('-v', '--version', action = 'store_true', help = 'Mostrar la versión y salir')
+        parser.add_argument('server', nargs = '?', help = 'Server wanted to connect to', type = str)
+        parser.add_argument('-c', '--completion', action = 'store_true', help = 'Autocomplete mode')
+        parser.add_argument('-v', '--version', action = 'store_true', help = 'Show version and exit')
 
         if self._command == 'conectar':
-            parser.add_argument('-L', action = 'store', dest = 'local_bind', help = 'Pasa directamente al cliente SSH el contenido de esta opción con el parámetro \'-L\' (ver \'man ssh\' para más detalles)')
+            parser.add_argument('-L', action = 'store', dest = 'local_bind', help = 'Pass the contents of this option directly to the SSH client with the \'-L\' parameter (see \'man ssh\' for details)')
         elif self._command == 'desmontar':
-            parser.add_argument('-l', '--lazy', action = 'store_true', help = 'desvincula el sistema de ficheros ahora y limpia más tarde', required = False)
+            parser.add_argument('-l', '--lazy', action = 'store_true', help = 'Unlink the file system now and clean up later', required = False)
 
         args = parser.parse_args(argv)
 
@@ -173,7 +173,7 @@ class libConectar:
         if self._args is None:
             res = False
         elif self._args.version:
-            res = 'Python 3 conector pip package version 3.5.0'
+            res = 'Python 3 conector pip package version 3.5.1'
         else:
             loader = DataLoader()
 
