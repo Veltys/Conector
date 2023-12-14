@@ -10,7 +10,7 @@
 
     @author     : Veltys
     @date       : 2023-12-14
-    @version    : 3.4.0
+    @version    : 3.4.1
     @usage      : import libConectar | from libConectar import ...
     @note       : ...
 '''
@@ -91,7 +91,7 @@ class libConectar:
                 self._doChangeConsoleTitle(f"\033]30;({ user }) { self._host_vars.get('ansible_host') }\007")
 
             print(f"Connecting to { host } ➡️ { user }@{ self._host_vars.get('ansible_host') }:{ port }..." + ' ') # Damn emojis 😢
-            res = os.system(f"ssh -i { self._ssh_key } " + (f"-L { self._args.local_bind }" if self._args.local_bind is not None else '') + f" -p { port } '{ user }@{ self._host_vars.get('ansible_host') }'" + (f" -J '{ user }@{ self._host_vars.get('bastion') }:21022'" if self._host_vars.get('bastion') is not None else ''))
+            res = os.system(f"ssh -i { self._ssh_key } " + (f"-L { self._args.local_bind }" if self._args.local_bind is not None else '') + f" -p { port } '{ user }@{ self._host_vars.get('ansible_host') }'" + (f" -J '{ user }@{ self._host_vars.get('bastion') }:{ port }'" if self._host_vars.get('bastion') is not None else ''))
 
             if changeConsoleTitle:
                 self._doChangeConsoleTitle("\033]30;%d : %n")                   # Restores the original console title
