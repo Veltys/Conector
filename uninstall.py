@@ -52,11 +52,12 @@ def remove_bash_completion_files():
                 print(f"Error removing {system_file_path}: {str(e)}")
 
 
-def uninstall_package(package_name):
+def uninstall_package(package_name, bsp = False):
     '''!
         Uninstalls the specified Python package using pip
 
-        @param package_name:    The name of the package to uninstall
+        @param package_name     : The name of the package to uninstall
+        @param bsp              : 'break-system-packages' param
 
         This function uninstalls the given Python package using pip
         and prints a message to inform the user about the status of the
@@ -64,8 +65,13 @@ def uninstall_package(package_name):
     '''
 
 
+    params = ['pip', 'uninstall', '-y', package_name]
+
+    if(bsp):
+        params.insert(2, '--break-system-packages')
+
     try:
-        subprocess.run(['pip', 'uninstall', '--break-system-packages', '-y', package_name], check = True)
+        subprocess.run(params, check = True)
 
         print(f"Uninstalled {package_name}")
 
@@ -77,14 +83,14 @@ def main(argv):
     '''!
         Performs the needed operations to uninstall the package
 
-        @param argv:            Program arguments
+        @param argv             : Program arguments
 
         @return:                Return code
     '''
 
 
     remove_bash_completion_files()
-    uninstall_package('conector')
+    uninstall_package('conector', '--break-system-packages' in argv)
 
 
 if __name__ == "__main__":
