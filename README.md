@@ -15,6 +15,11 @@ System connection manager using Python which connects and mounts home directory 
 ### To-do (*TODO*)
 - [ ] PowerShell completion facilities
 - [ ] Internationalization
+- [ ] Full commands translation
+
+### [3.5.2] - 2023-12-14
+#### Fixed
+- Windows installation process
 
 ### [3.5.1] - 2023-12-14
 #### Added

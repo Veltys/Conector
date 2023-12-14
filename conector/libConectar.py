@@ -16,15 +16,16 @@
 '''
 
 
-from ansible.inventory.manager import InventoryManager                          # Ansible inventory manager
-from ansible.parsing.dataloader import DataLoader                               # Ansible data loader
-from ansible.parsing.vault import VaultSecret                                   # Ansible vault parser
-from ansible.vars.manager import VariableManager                                # Ansible vars manager
-from exitstatus import ExitStatus                                               # Exit codes
 import argparse                                                                 # Argument processor functions
 import os                                                                       # Miscellaneous operating system interfaces
 import sys                                                                      # System-specific parameters and functions
 
+from exitstatus import ExitStatus                                               # Exit codes
+
+from ansible.inventory.manager import InventoryManager                          # Ansible inventory manager
+from ansible.parsing.dataloader import DataLoader                               # Ansible data loader
+from ansible.parsing.vault import VaultSecret                                   # Ansible vault parser
+from ansible.vars.manager import VariableManager                                # Ansible vars manager
 from config import *                                                            # Config file
 
 
@@ -173,7 +174,7 @@ class libConectar:
         if self._args is None:
             res = False
         elif self._args.version:
-            res = 'Python 3 conector pip package version 3.5.1'
+            res = 'Python 3 conector pip package version 3.5.2'
         else:
             loader = DataLoader()
 
