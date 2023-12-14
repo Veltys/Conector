@@ -9,8 +9,8 @@
     @brief      : Custom installer
 
     @author     : Veltys
-    @date       : 2023-11-04
-    @version    : 1.0.1
+    @date       : 2023-12-13
+    @version    : 1.0.2
     @usage      : (imported by setup.py)
     @note       : ...
 '''
@@ -65,7 +65,7 @@ def uninstall_package(package_name):
 
 
     try:
-        subprocess.run(['pip', 'uninstall', '-y', package_name], check = True)
+        subprocess.run(['pip', 'uninstall', '--break-system-packages', '-y', package_name], check = True)
 
         print(f"Uninstalled {package_name}")
 

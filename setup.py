@@ -20,7 +20,7 @@ from setuptools import setup, find_packages                                     
 
 from install_script import CustomInstall
 
-VERSION = '3.2.4'
+VERSION = '3.3.0'
 DESCRIPTION = 'Python-powered system connection manager and mounts via SSH'
 LONG_DESCRIPTION = 'System connection manager using Python which connects and mounts home directory through SSH'
 
