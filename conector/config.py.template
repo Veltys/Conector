@@ -9,8 +9,8 @@
     @brief      : Config file
 
     @author     : Veltys
-    @date       : 2023-04-20
-    @version    : 1.1.0
+    @date       : 2023-12-14
+    @version    : 1.1.1
     @usage      : import config | from config import *
     @note       : ...
 '''
@@ -18,7 +18,7 @@
 
 SSH_KEY = 'path/to/your/ssh/key'
 DEFAULT_ANSIBLE_USER = 'your_ssh_user'
-INVENTORY_DIR_NAME = [
+INVENTORY_DIR_NAMES = [
     'path/to/your/ansible/inventory/directory/or/file',
     'path/to/another/ansible/inventory/directory/or/file',
 ]
