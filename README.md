@@ -20,6 +20,9 @@ System connection manager using Python which connects and mounts home directory 
 #### Added
 - Bastion host indication in "Connecting to..." message
 
+#### Fixed
+- English texts
+
 ### [3.5.0] - 2023-12-14
 #### Added
 - *break-system-packages* parameter detection
