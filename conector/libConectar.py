@@ -9,8 +9,8 @@
     @brief      : Server connection library
 
     @author     : Veltys
-    @date       : 2023-12-14
-    @version    : 3.4.2
+    @date       : 2023-12-19
+    @version    : 3.4.3
     @usage      : import libConectar | from libConectar import ...
     @note       : ...
 '''
@@ -91,8 +91,8 @@ class libConectar:
             if changeConsoleTitle:
                 self._doChangeConsoleTitle(f"\033]30;({ user }) { self._host_vars.get('ansible_host') }\007")
 
-            print(f"Connecting to { host } ➡️ { user }@{ self._host_vars.get('ansible_host') }:{ port }" + (f" using { user }@{ self._host_vars.get('bastion') }:{ port } as jump host" if self._host_vars.get('bastion') is not None else '') + '... ') # Damn emojis 😢
-            res = os.system(f"ssh -i { self._ssh_key } " + (f"-L { self._args.local_bind }" if self._args.local_bind is not None else '') + f" -p { port } '{ user }@{ self._host_vars.get('ansible_host') }'" + (f" -J '{ user }@{ self._host_vars.get('bastion') }:{ port }'" if self._host_vars.get('bastion') is not None else ''))
+            print(f"Connecting to { host } ➡️ { user }@{ self._host_vars.get('ansible_host') }:{ port }" + (f" using { self._host_vars.get('ansible_ssh_common_args')[3:] } as jump host" if self._host_vars.get('ansible_ssh_common_args') is not None and self._host_vars.get('ansible_ssh_common_args')[0:2] == '-J' else '') + '... ') # Damn emojis 😢
+            res = os.system(f"ssh -i { self._ssh_key } " + (f"-L { self._args.local_bind }" if self._args.local_bind is not None else '') + f" -p { port } '{ user }@{ self._host_vars.get('ansible_host') }'" + (' ' + self._host_vars.get('ansible_ssh_common_args') if self._host_vars.get('ansible_ssh_common_args') is not None else ''))
 
             if changeConsoleTitle:
                 self._doChangeConsoleTitle("\033]30;%d : %n")                   # Restores the original console title
@@ -174,7 +174,7 @@ class libConectar:
         if self._args is None:
             res = False
         elif self._args.version:
-            res = 'Python 3 conector pip package version 3.5.3'
+            res = 'Python 3 conector pip package version 3.5.4'
         else:
             loader = DataLoader()
 
