@@ -17,6 +17,12 @@ System connection manager using Python which connects and mounts home directory 
 - [ ] Internationalization
 - [ ] Full commands translation
 
+### [3.5.5] - 2024-02-08
+#### Added
+- **version.txt** file to update version automatically
+#### Fixed
+- Install and uninstall documentation
+
 ### [3.5.4] - 2023-12-19
 #### Fixed
 - Better way to connect through a configured bastion host
@@ -165,7 +171,7 @@ To install the 'conector' package, follow these steps:
 5. Install the 'conector' package using pip:
 
   ```bash
-   sudo pip install [ --break-system-packages ] .
+   [ sudo ] pip install [ --break-system-packages ] .
   ```
 
   Note: Do not forget the final dot.
@@ -192,7 +198,7 @@ To uninstall the 'conector' package and remove the Bash autocompletion files, fo
 2. Run the following command, this will remove the 'conector' package and the associated bash autocompletion files:
 
   ```bash
-  python3 uninstall.py [ --break-system-packages ]
+  [ sudo ] python3 uninstall.py [ --break-system-packages ]
   ```
 
 
