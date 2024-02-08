@@ -18,6 +18,8 @@ System connection manager using Python which connects and mounts home directory 
 - [ ] Full commands translation
 
 ### [3.5.5] - 2024-02-08
+#### Added
+- **version.txt** file to update version automatically
 #### Fixed
 - Install and uninstall documentation
 
